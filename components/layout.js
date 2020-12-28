@@ -3,13 +3,14 @@ import styles from './layout.module.css'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 
-const name = 'Your Name'
+const name = 'Oleg'
 export const siteTitle = 'Next.js Sample Website'
 
 export default function Layout({ children, home }) {  // home передано из index.js, children - то что в компоненте layout
   return (
     <div className={styles.container}>
-      <Head>
+
+      <Head>{/*Общее для всех страниц обернутых этим комнонентом - добавляет всякий мусор*/}
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
@@ -25,7 +26,8 @@ export default function Layout({ children, home }) {  // home передано �
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <header className={styles.header}>
-        {home ? (
+
+        {home ? ( // если это домашняя страничка
           <>
             <img
               src="/images/profile.jpg"
@@ -34,7 +36,7 @@ export default function Layout({ children, home }) {  // home передано �
             />
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
           </>
-        ) : (
+        ) : (  // если это не домашняя страничка ставим ссылку на домашнюю на изображении
           <>
             <Link href="/">
               <a>
@@ -53,8 +55,10 @@ export default function Layout({ children, home }) {  // home передано �
           </>
         )}
       </header>
-      <main>{children}</main>
-      {!home && (
+
+      <main>{children}</main> {/*Сам компонент в обертке*/}
+
+      {!home && ( // если не домашняя страница еще одну ссілку лепим
         <div className={styles.backToHome}>
           <Link href="/">
             <a>← Back to home</a>
