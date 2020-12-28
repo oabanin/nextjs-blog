@@ -58,9 +58,41 @@ Two Forms of Pre-rendering
 - Server-side Rendering 
 You can create a "hybrid" Next.js app by using Static Generation for most pages and using Server-side Rendering for others.
 
-getStaticProps используется для пререндеринга статистических html с данными
+getStaticProps 
+
+getStaticProps используется для пререндеринга ТОЛЬКО СТАТИЧЕСКИХ html с данными и только ВО ВРЕМЯ СБОРКИ, работает на бєкенде
+getStaticProps only runs on the server-side. Поэтому можно сразу делать запрос к БД
+getStaticProps может использовать только в файлах страницах (в каталоге pages)
 getStaticProps runs at build time in production, and Inside the function, you can fetch external data and send it as props to the page.
 getStaticProps напоминает HOC connect
+Если вам нужно получить данные во время запроса, а не во время сборки, вы можете попробовать рендеринг на стороне сервера
 
+getServerSideProps
 
+To use Server-side Rendering, you need to export getServerSideProps instead of getStaticProps from your page.
+Вы должны использовать getServerSideProps только в том случае, если вам нужно предварительно отрисовать страницу, данные которой должны быть получены во время запроса
+параметр context содержит параметры запроса.
 
+Client-side Rendering
+If you do not need to pre-render the data, you can also use the following strategy (called Client-side Rendering):
+Statically generate (pre-render) parts of the page that do not require external data.
+When the page loads, fetch external data from the client using JavaScript and populate the remaining parts.
+
+This approach works well for user dashboard pages, for example. 
+
+useSWR()
+import useSWR from 'swr'
+function Profile() {
+  const { data, error } = useSWR('/api/user', fetch)
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
+  return <div>hello {data.name}!</div>
+}
+
+--------------
+
+Динамические пути
+Файл должен біть с именем [id].js и находиться в pages/posts. 
+в файле помимо кода компонента нужно єкспортировать также 2 функции со специальными именами
+export async function getStaticPaths() - функция должна возвращать массив paths с названиями путей (какие значения может принимать [id])
+export async function getStaticProps() 
