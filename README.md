@@ -91,8 +91,11 @@ function Profile() {
 
 --------------
 
-Динамические пути
-Файл должен біть с именем [id].js и находиться в pages/posts. 
-в файле помимо кода компонента нужно єкспортировать также 2 функции со специальными именами
-export async function getStaticPaths() - функция должна возвращать массив paths с названиями путей (какие значения может принимать [id])
-export async function getStaticProps() 
+Динамические импорты
+Файл должен біть с именем [id].js и находиться в pages/posts. (имя ключа зависит от названия файла)
+в файле помимо кода компонента нужно єкспортировать также 2 функции со специальными именами:
+- export async function getStaticPaths() - функция должна возвращать массив paths с названиями путей (какие значения может принимать [id])
+- export async function getStaticProps({params}) - в функцию прилетает объект params с ключем id, функция должна возвращать
+getStaticPaths и getStaticProps выполняются на сервере
+Порядок выполнения: getStaticPaths -> getStaticProps({params}) -> Post({props});
+в Post прилетают пропсы (результат выполнения getStaticProps). При этом из getStaticPaths в getStaticProps между собой ничего не передается
