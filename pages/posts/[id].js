@@ -1,8 +1,8 @@
 import Head from 'next/head'
 
 import Layout from '../../components/layout';
-import Date from '../../components/date'
-import { getAllPostIds, getPostData } from '../../lib/posts'; 
+import Date from '../../components/date.js'
+import { getAllPostIds, getPostData } from '../../lib/posts';
 
 import utilStyles from '../../styles/utils.module.css'
 /*импортируем функцию которая возвращает массив с возможными значениями динамического параметра [id] */
@@ -33,12 +33,12 @@ export default function Post({ postData }) {
 
 
 //(1)
-export function getStaticPaths() {  
-// даем серверу понять какие возможные пути может принимать [id], иначе 404
-// эта функция должна вернуть объект с возможными путями
-// эта функция выполняется на сервере
-// 
-  const paths = getAllPostIds();  
+export function getStaticPaths() {
+  // даем серверу понять какие возможные пути может принимать [id], иначе 404
+  // эта функция должна вернуть объект с возможными путями
+  // эта функция выполняется на сервере
+  // 
+  const paths = getAllPostIds();
   //функция возвращает массив следующего вида
   // [
   //   {
@@ -62,16 +62,16 @@ export function getStaticPaths() {
 
 //(2)
 export async function getStaticProps(props) {
-// обрабатываем полученный id
-// эта функция выполняется на сервере
-// в props прилетает объект следующего вида, нам нужен только params
-/*
-{
-  params: { id: 'pre-rendering' },
-  locales: undefined,
-  locale: undefined,
-  defaultLocale: undefined
- }*/
+  // обрабатываем полученный id
+  // эта функция выполняется на сервере
+  // в props прилетает объект следующего вида, нам нужен только params
+  /*
+  {
+    params: { id: 'pre-rendering' },
+    locales: undefined,
+    locale: undefined,
+    defaultLocale: undefined
+   }*/
   const { params } = props;
   const postData = await getPostData(params.id); // получаем по id данные
 
@@ -82,7 +82,7 @@ export async function getStaticProps(props) {
     }
   }
 
-//{props:{postData:{id:"pre-rendering",title:"Two Forms of Pre-rendering",date:"2020-01-01"}}}
+  //{props:{postData:{id:"pre-rendering",title:"Two Forms of Pre-rendering",date:"2020-01-01"}}}
 
 
 }

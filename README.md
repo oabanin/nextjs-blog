@@ -4,14 +4,15 @@ This is a starter template for [Learn Next.js](https://nextjs.org/learn).
 ## Архитектура 
 
 
-\- pages (КАТАЛОГ ОБЯЗАТЕЛЕН) - nextJs имеет встроенный роутинг, code splitting и lazy.loading компонентов. чтобы перейти на соседний урл нужно использовать <Link href="/"></link>. страницы раздаются из каталога pages.
+- pages (КАТАЛОГ ОБЯЗАТЕЛЕН) - nextJs имеет встроенный роутинг, code splitting и lazy.loading компонентов. чтобы перейти на соседний урл нужно использовать <Link href="/"></link>. страницы раздаются из каталога pages.
 |-- index.js - домашняяя страница
 |-- _app.js (так должно назіваться) - для подключения общих стилей для сайта ../styles/global.css
-|-- 404.js
+| -- 404.js
 |-- любой другой файл
-\-- 
-\-- posts (каталог) - необязателен, но удобен, используется в качестве категорий для динамической маршрутизации
- --- [id].js - для динамической маршрутизации
+-- api (каталог)
+ |-- hello.js -api
+-- posts (каталог) - необязателен, но удобен, используется в качестве категорий для динамической маршрутизации
+ |--- [id].js - для динамической маршрутизации
 |- public  (КАТАЛОГ ОБЯЗАТЕЛЕН)  - public - изображения и другие assets, отдаются их єтой папкм
 |- components - для компонентов (в примере обертка layout)
 |- styles - css (scss) общие стили для всего сайта (загружаются не как чанки), css модуль utils
@@ -35,9 +36,11 @@ npm install sass
 
 ###Global Styles СCS
 To load global CSS files, create a file called pages/_app.js with the following content:
-```export default function App({ Component, pageProps }) {
+```
+export default function App({ Component, pageProps }) {
   return <Component {...pageProps} />
-}```
+}
+```
 
 In Next.js, you can add global CSS files by importing them from pages/_app.js. You cannot import global CSS anywhere else.
 Т.к. инлайн стили на странице имеют самый высокий приоритет, то они будут перебивать стили в global.css
@@ -48,12 +51,14 @@ To customize PostCSS config, you can create a top-level file called postcss.conf
 но их все равно необходимо установить  postcss-preset-env  и postcss-flexbugs-fixes
  npm install tailwindcss postcss-preset-env postcss-flexbugs-fixes
 
-```<style jsx>{`
+```
+<style jsx>{`
         .container {
           min-height: 100vh;
  	  ...
         }
-`}</style>```
+`}</style>
+```
 
 ---
 
@@ -86,14 +91,16 @@ By default, Next.js pre-renders every page
 - When the page loads, fetch external data from the client using JavaScript and populate the remaining parts.
 - This approach works well for user dashboard pages, for example. 
 
-```useSWR()
+```
+useSWR()
 import useSWR from 'swr'
 function Profile() {
   const { data, error } = useSWR('/api/user', fetch)
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
   return <div>hello {data.name}!</div>
-}```
+}
+```
 
 ---
 
@@ -108,4 +115,21 @@ function Profile() {
 - Порядок выполнения: `getStaticPaths -> getStaticProps({params}) -> Post({props});`
 - в Post прилетают пропсы (результат выполнения getStaticProps). При этом из getStaticPaths в getStaticProps между собой ничего не передается
 
-#
+
+---
+
+###API ROUTES (ENDPOINTS)
+СОздаются в pages/api/hello.js
+```
+export default function handler(req, res) {
+  res.status(200).json({ text: 'Hello' })
+}
+```
+
+###TYPESCRIPT
+
+По умолчанию TS не установлен
+- Создаем tsconfig.json (пустой)
+- выполняем npm install --save-dev typescript @types/react @types/node
+- в файл tsconfig.json автоматически вносятся изменения
+- создается next-env.d.ts
