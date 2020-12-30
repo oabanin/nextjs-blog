@@ -5,19 +5,33 @@ This is a starter template for [Learn Next.js](https://nextjs.org/learn).
 
 
 - pages (КАТАЛОГ ОБЯЗАТЕЛЕН) - nextJs имеет встроенный роутинг, code splitting и lazy.loading компонентов. чтобы перейти на соседний урл нужно использовать <Link href="/"></link>. страницы раздаются из каталога pages.
+
 |-- index.js - домашняяя страница
+
 |-- _app.js (так должно назіваться) - для подключения общих стилей для сайта ../styles/global.css
+
 | -- 404.js
+
 |-- любой другой файл
+
 -- api (каталог)
+
  |-- hello.js -api
+
 -- posts (каталог) - необязателен, но удобен, используется в качестве категорий для динамической маршрутизации
+
  |--- [id].js - для динамической маршрутизации
+
 |- public  (КАТАЛОГ ОБЯЗАТЕЛЕН)  - public - изображения и другие assets, отдаются их єтой папкм
+
 |- components - для компонентов (в примере обертка layout)
+
 |- styles - css (scss) общие стили для всего сайта (загружаются не как чанки), css модуль utils
+
 |- posts - посты в формате Markdown для примера пре-рендера статических страниц с данными
+
 |- lib/posts.js - api для получения данных постов (в данном случае чтения из каталога)
+
 ---
 
 LAYOUT это обертка для index.js и first_page.js, но переменные переданные в этот компонент через props не попадают в _app.js 
@@ -26,15 +40,15 @@ Layout содержит логику отображения Home или отде
 
 ---
 
-##CSS
+## CSS
 
-###CSS модули 
+### CSS модули 
 модули css должны иметь имя *.module.css; .module.scss or .module.sass
  CSS Modules automatically generates unique class names.
 перед использование sass нужно доустановить сначала его
 npm install sass
 
-###Global Styles СCS
+### Global Styles СCS
 To load global CSS files, create a file called pages/_app.js with the following content:
 ```
 export default function App({ Component, pageProps }) {
@@ -62,7 +76,7 @@ To customize PostCSS config, you can create a top-level file called postcss.conf
 
 ---
 
-##PRERENDER
+## PRERENDER
 
 By default, Next.js pre-renders every page
 #### Two Forms of Pre-rendering
@@ -70,7 +84,7 @@ By default, Next.js pre-renders every page
 - Server-side Rendering 
 - You can create a "hybrid" Next.js app by using Static Generation for most pages and using Server-side Rendering for others.
 
-###getStaticProps 
+### getStaticProps 
 
 - getStaticProps используется для пререндеринга ТОЛЬКО СТАТИЧЕСКИХ html с данными и только ВО ВРЕМЯ СБОРКИ, работает на бєкенде
 - getStaticProps only runs on the server-side. Поэтому можно сразу делать запрос к БД. нельзя делать запрос к api написанной в posts/api
@@ -79,13 +93,13 @@ By default, Next.js pre-renders every page
 - getStaticProps напоминает HOC connect
 - Если вам нужно получить данные во время запроса, а не во время сборки, вы можете попробовать рендеринг на стороне сервера
 
-###getServerSideProps
+### getServerSideProps
 
 - To use Server-side Rendering, you need to export getServerSideProps instead of getStaticProps from your page.
 - Вы должны использовать getServerSideProps только в том случае, если вам нужно предварительно отрисовать страницу, данные которой должны быть получены во время запроса
 - параметр context содержит параметры запроса.
 
-###Client-side Rendering
+### Client-side Rendering
 - If you do not need to pre-render the data, you can also use the following strategy (called Client-side Rendering):
 - Statically generate (pre-render) parts of the page that do not require external data.
 - When the page loads, fetch external data from the client using JavaScript and populate the remaining parts.
@@ -118,7 +132,7 @@ function Profile() {
 
 ---
 
-###API ROUTES (ENDPOINTS)
+### API ROUTES (ENDPOINTS)
 СОздаются в pages/api/hello.js
 ```
 export default function handler(req, res) {
@@ -126,7 +140,7 @@ export default function handler(req, res) {
 }
 ```
 
-###TYPESCRIPT
+### TYPESCRIPT
 
 По умолчанию TS не установлен
 - Создаем tsconfig.json (пустой)
