@@ -1,9 +1,17 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts' //api-шная функция для получения данных
+import Date from '../components/date'; //для представления даты в удобном формате
 
-export async function getStaticProps() { //асинхронная функция выполняющаяся перед рендерингом Home, получает данные и засовывает их в props, по типу HOC connect
+
+//Порядок выполнения getStaticPaths -> Post
+//компоненты которым необходимы данный перед статическим пререндером
+//(1)
+export async function getStaticProps() { //асинхронная функция выполняющаяся перед рендерингом Home, 
+										 //получает данные и засовывает их в props, по типу HOC connect
+										 // используется в компонентах которым необходимы данные перед статическим пререндером страниц
   const allPostsData = getSortedPostsData()
   return {
     props: {
@@ -12,6 +20,7 @@ export async function getStaticProps() { //асинхронная функция
   }
 }
 
+//(2)
 export default function Home({allPostsData}) { // в пропсах данные от getStaticProps
   return (
     <Layout home> {/* Прокидываем переменную home=true через обертку layout. */}
@@ -33,12 +42,14 @@ export default function Home({allPostsData}) { // в пропсах данные
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              {title}
-              <br />
-              {id}
-              <br />
-              {date}
-            </li>
+			  <Link href={`/posts/${id}`}>
+			    <a>{title}</a>
+			  </Link>
+			  <br />
+			  <small className={utilStyles.lightText}>
+			    <Date dateString={date} />
+			  </small>
+			</li>
           ))}
         </ul>
       </section>
