@@ -1,17 +1,39 @@
 import Head from 'next/head'
-import Link from 'next/link'
+import Link from 'next/link' // доступ к элементу 
+import { useRouter } from 'next/router'; // доступ напрямую к роутеру
+
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts' //api-шная функция для получения данных
 import Date from '../components/date'; //для представления даты в удобном формате
 
 
+function ActiveLink({ children, href }) { // example Router-link component
+  const router = useRouter()
+  const style = {
+    marginRight: 10,
+    color: router.pathname === href ? 'red' : 'black',
+  }
+
+  const handleClick = (e) => {
+    e.preventDefault()
+    router.push(href)
+  }
+
+  return (
+    <a href={href} onClick={handleClick} style={style}>
+      {children}
+    </a>
+  )
+}
+
+
 //Порядок выполнения getStaticPaths -> Post
 //компоненты которым необходимы данный перед статическим пререндером
 //(1)
 export async function getStaticProps() { //асинхронная функция выполняющаяся перед рендерингом Home, 
-										 //получает данные и засовывает их в props, по типу HOC connect
-										 // используется в компонентах которым необходимы данные перед статическим пререндером страниц
+  //получает данные и засовывает их в props, по типу HOC connect
+  // используется в компонентах которым необходимы данные перед статическим пререндером страниц
   const allPostsData = getSortedPostsData()
   return {
     props: {
@@ -21,10 +43,11 @@ export async function getStaticProps() { //асинхронная функция
 }
 
 //(2)
-export default function Home({allPostsData}) { // в пропсах данные от getStaticProps
+export default function Home({ allPostsData }) { // в пропсах данные от getStaticProps
+  const router = useRouter();
   return (
     <Layout home> {/* Прокидываем переменную home=true через обертку layout. */}
-      			{/*Layout содержит логику отображения Home или отдельного поста в index.js, а также общую часть для first_post*/}
+      {/*Layout содержит логику отображения Home или отдельного поста в index.js, а также общую часть для first_post*/}
       <Head>
         <title>{siteTitle}</title>
       </Head>
@@ -37,21 +60,34 @@ export default function Home({allPostsData}) { // в пропсах данные
         </p>
       </section>
 
-       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-			  <Link href={`/posts/${id}`}>
-			    <a>{title}</a>
-			  </Link>
-			  <br />
-			  <small className={utilStyles.lightText}>
-			    <Date dateString={date} />
-			  </small>
-			</li>
+              <Link href={`/posts/${id}`}>
+                <a>{title}</a>
+              </Link>
+              <br />
+              <small className={utilStyles.lightText}>
+                <Date dateString={date} />
+              </small>
+            </li>
           ))}
         </ul>
+      </section>
+
+      <section>
+        <h2>Router Link</h2>
+        <div>
+          <a href='#' onClick={(e) => {
+            e.preventDefault;
+            router.push('/posts/first_post');
+
+          }}>
+            Router Link
+          </a>
+        </div>
       </section>
 
     </Layout>
