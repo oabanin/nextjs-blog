@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link' // доступ к элементу 
+import Router from 'next/router';
 import { useRouter } from 'next/router'; // доступ напрямую к роутеру
 
 import Layout, { siteTitle } from '../components/layout'
@@ -85,8 +86,41 @@ export default function Home({ allPostsData }) { // в пропсах данны
             router.push('/posts/first_post');
 
           }}>
-            Router Link
+            Router Link (router.push('/posts/first_post'), a href=#)
           </a>
+          <div>
+            <button onClick={(e) => {
+              e.preventDefault;
+              router.push('/posts/first_post');
+
+            }}>
+              Router button - useRouter
+          </button>
+          </div>
+          <div>
+            <button onClick={(e) => {
+              e.preventDefault;
+              Router.push('/posts/first_post');
+
+            }}>
+              Router button - Router
+          </button>
+          </div>
+
+          <h2>other links</h2>
+          <div>
+            <a href='/posts/first_post'>Bad link (reloading)</a>
+          </div>
+          <div>
+            <Link href={'/posts/first_post'}><a>Link from 'next/link' (no reloading)</a></Link>
+          </div>
+          <div>
+            <Link href='/posts/first_post'><a>Link from 'next/link' (no reloading)</a></Link>
+          </div>
+
+
+
+
         </div>
       </section>
 
