@@ -84,6 +84,25 @@ To customize PostCSS config, you can create a top-level file called postcss.conf
 
 ---
 
+## DATA FETCHING
+
+### getInitialProps
+Если пользоваться по старинке useState && useEffect для асинхронной загрузки данных то пропадает SSR. чтобы был SSR необходимо использовать getInitialProps. getInitialProps это статический метод компонента который выполняется первым, получает необходимые данные и передает дальше в сам компонент, 
+
+```
+//(2) Компонент получает из getInitialProps пропсы (данные апи)
+const Post = ({ posts }) => <pre>{JSON.stringify(posts, null, 2)}</pre>
+
+//(1) это выполняется на бэкенде. api находится на другом сервере, если было бы на нашем правильно делать было бы запрос к БД напрямую
+Post.getInitialProps = async (ctx) => {
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts')
+    const json = await res.json()
+    return { posts: json } // 
+}
+```
+
+---
+
 ## PRERENDER
 
 By default, Next.js pre-renders every page
