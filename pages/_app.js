@@ -1,5 +1,11 @@
 import '../styles/global.css'
 
+
+
+//pageProps получают методом getInitialProps (если нет этого метода - pageProps пустые)
+//pageProps это данные из id#=__next_data__ (видно в исходном коде)
+//pageProps передаются из <script id="__NEXT_DATA__">
+
 export default function App(props) {
   const { Component, pageProps } = props;
   return (<>
