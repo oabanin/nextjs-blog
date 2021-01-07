@@ -86,7 +86,7 @@ To customize PostCSS config, you can create a top-level file called postcss.conf
 
 ## DATA FETCHING
 
-### getInitialProps
+### getInitialProps  (Комбинирование SSR и фронтенд)
 Если пользоваться по старинке useState && useEffect для асинхронной загрузки данных то пропадает SSR. чтобы был SSR необходимо использовать getInitialProps. getInitialProps это статический метод компонента который выполняется первым, получает необходимые данные и передает дальше в сам компонент.
 
 При первоначальном рендеринге getInitialProps выполняется на сервере, но если сайт уже загружен и мы делаем переход на новую страницу, то данный метод будет вызываться уже на фронтенде и некторых объектов уже не будет. 
@@ -101,13 +101,18 @@ To customize PostCSS config, you can create a top-level file called postcss.conf
 //(2) Компонент получает из getInitialProps пропсы (данные апи)
 const Post = ({ posts }) => <pre>{JSON.stringify(posts, null, 2)}</pre>
 
-//(1) это выполняется на бэкенде (или фронтенде если переход произошел с другой ранее загруженной страницы). api находится на другом сервере, если было бы на нашем правильно делать было бы запрос к БД напрямую
+//(1) getInitialProps может выполняется как на бэкенде (если сначала грузится это страница), так и на фронтенде (комбинировання функция)
+//если на эту страницу выполнен переход - то на фронтенде, и некоторые объекты отпадают)
+//api находится на другом сервере, если было бы на нашем правильно делать было бы запрос к БД напрямую
+// поэтому нужно проверять перед тем как делать на фронте или бэке какие то операции
 Post.getInitialProps = async (ctx) => {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts')
     const json = await res.json()
     return { posts: json } // 
 }
 ```
+
+если нужен только SSR Nextjs рекомендует getServerSideProps (там почти такой же синтаксис)
 
 ---
 
@@ -128,7 +133,7 @@ By default, Next.js pre-renders every page
 - getStaticProps напоминает HOC connect
 - Если вам нужно получить данные во время запроса, а не во время сборки, вы можете попробовать рендеринг на стороне сервера
 
-### getServerSideProps
+### getServerSideProps (выполняется только на бэкенде)
 
 - To use Server-side Rendering, you need to export getServerSideProps instead of getStaticProps from your page.
 - Вы должны использовать getServerSideProps только в том случае, если вам нужно предварительно отрисовать страницу, данные которой должны быть получены во время запроса

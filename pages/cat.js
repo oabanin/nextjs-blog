@@ -52,11 +52,26 @@ const Post = ({ posts: serverPosts }) => {
 
 
 //(1) это выполняется на бэкенде. api находится на другом сервере, если было бы на нашем правильно делать было бы запрос к БД напрямую
-Post.getInitialProps = async (ctx) => {
-    if (!ctx.req) return { posts: null } // возвращаем нулевой объект для загрузкки на фронте
+// Post.getInitialProps = async (ctx) => {
+//     if (!ctx.req) return { posts: null } // возвращаем нулевой объект для загрузкки на фронте
+//     const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+//     const json = await res.json();
+//     return { posts: json }
+// }
+
+//(1) документация рекомендует вместо get initialprops, работает также само, изменяется формат возврата объекьа
+// но при этом мы лишаемся возможности уменьшить задержку для пользователя при переходе между ссылками на сайте
+export async function getServerSideProps(context) {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts');
     const json = await res.json();
-    return { posts: json }
+
+    if (!json) {
+        return { props: { posts: null } };
+    }
+
+    return {
+        props: { posts: json }, // will be passed to the page component as props
+    }
 }
 
 

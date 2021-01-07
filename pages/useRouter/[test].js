@@ -58,20 +58,40 @@ const Post = ({ post: serverPost }) => {
 }
 
 
-//(1) getInitialProps  выполняется на бэкенде (если сначала грузится это страница),
+//(1) getInitialProps может выполняется как на бэкенде (если сначала грузится это страница), так и на фронтенде
 //если на эту страницу выполнен переход - то на фронтенде, и некоторые объекты отпадают)
 //api находится на другом сервере, если было бы на нашем правильно делать было бы запрос к БД напрямую
-Post.getInitialProps = async (context) => {
-    // если нет объекта request 
-    // то значит это был переход между страницами, а значит возвращаем null и подтягиваем данные через фронтенд
-    // делается это чтобы уменьшить задержку getInitialProps если api долго отвечает, 
-    // отрисовать часть интерфейса и потом по стандарту его подгрузить
-    if (!context.req) return {
-        post: null
-    }
+// Post.getInitialProps = async (context) => {
+//     // если нет объекта request 
+//     // то значит это был переход между страницами, а значит возвращаем null и подтягиваем данные через фронтенд
+//     // делается это чтобы уменьшить задержку getInitialProps если api долго отвечает, 
+//     // отрисовать часть интерфейса и потом по стандарту его подгрузить
+//     if (!context.req) return {
+//         post: null
+//     }
+//     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.query.test}`)
+//     const json = await res.json()
+//     return { post: json }
+// }
+
+
+// (1) документация рекомендует getServerSideProps вместо getInitialProps (более современные методы)
+// данная функция вызывается исключительно на серверной части
+// поэтому можно делать запросы напрямую к Базе данный не боясь что будет выполняться на клиенте
+// документация рекомендует вместо get initialprops, работает также само, изменяется формат возврата объекьа
+// но при этом мы лишаемся возможности уменьшить задержку для пользователя при переходе между ссылками на сайте
+export async function getServerSideProps(context) {
+
+    // if (!context.req) return {  // эта проверка уже не нужна тк. вызывается только на сервере
+    //     post: null
+    // }
     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.query.test}`)
     const json = await res.json()
-    return { post: json }
+
+
+    return {
+        props: { post: json }, // will be passed to the page component as props
+    }
 }
 
 

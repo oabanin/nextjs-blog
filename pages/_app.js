@@ -1,3 +1,5 @@
+import NextNprogress from 'nextjs-progressbar';
+
 import '../styles/global.css'
 
 
@@ -9,6 +11,12 @@ import '../styles/global.css'
 export default function App(props) {
   const { Component, pageProps } = props;
   return (<>
+    <NextNprogress
+      color="#29D"
+      startPosition={0.3}
+      stopDelayMs={200}
+      height="3"
+    />
     <Component {...pageProps} />
     {/* <style jsx global>{`
       body {

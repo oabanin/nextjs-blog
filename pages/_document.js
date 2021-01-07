@@ -14,9 +14,9 @@ class MyDocument extends Document { //Наследуемся от докумен
                     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
                 </Head>
                 <body>
-                    <Main /> {/* наши компоненты - pages, components/layout итд (все между div id="__next")*/}
+                    <Main /> {/* в Main наши компоненты - pages, components/layout итд (все между div id="__next")*/}
                     Text between Main and NextScript
-                    <NextScript /> {/*Скрипты после div id="__next"*/}
+                    <NextScript /> {/*в NextScript - Скрипты после div id="__next"*/}
                 </body>
             </Html>
         )

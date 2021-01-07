@@ -117,6 +117,9 @@ export default function Home({ allPostsData }) { // в пропсах данны
           <div>
             <Link href='/posts/first_post'><a>Link from 'next/link' (no reloading)</a></Link>
           </div>
+          <div>
+            <Link href="/index">Index page</Link>
+          </div>
 
 
 
