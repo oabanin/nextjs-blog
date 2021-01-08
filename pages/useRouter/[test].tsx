@@ -4,9 +4,16 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { Layout } from '../../components/layout2';
+import { NextPageContext } from 'next';
+import { Cat } from '../../interfaces/cat';
+
+
+interface PostPageProps {
+    post: Cat
+}
 
 //(2) Компонент получает из getInitialProps пропсы (данные апи). это фронтенд
-const Post = ({ post: serverPost }) => {
+const Post = ({ post: serverPost }: PostPageProps) => {
     const router = useRouter();
 
     const [post, setPost] = useState(serverPost); // по умолчанию присваиваем прилетевшие посты в стейт
@@ -75,18 +82,27 @@ const Post = ({ post: serverPost }) => {
 // }
 
 
+interface TestPageNextContext extends NextPageContext { // наследуемся от NextPageContext
+    //создаем интерфейс с указанием параметра - имени файла
+    query: {
+        test: string // название файла - параметр
+    }
+}
+
+
 // (1) документация рекомендует getServerSideProps вместо getInitialProps (более современные методы)
 // данная функция вызывается исключительно на серверной части
 // поэтому можно делать запросы напрямую к Базе данный не боясь что будет выполняться на клиенте
 // документация рекомендует вместо get initialprops, работает также само, изменяется формат возврата объекьа
 // но при этом мы лишаемся возможности уменьшить задержку для пользователя при переходе между ссылками на сайте
-export async function getServerSideProps(context) {
-
+export async function getServerSideProps(context: TestPageNextContext) {
     // if (!context.req) return {  // эта проверка уже не нужна тк. вызывается только на сервере
     //     post: null
     // }
+
+
     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${context.query.test}`)
-    const json = await res.json()
+    const json: Cat = await res.json()
 
 
     return {

@@ -186,4 +186,5 @@ export default function handler(req, res) {
 - Создаем tsconfig.json (пустой)
 - выполняем npm install --save-dev typescript @types/react @types/node
 - в файл tsconfig.json автоматически вносятся изменения
-- создается next-env.d.ts
+- создается next-env.d.ts в котором прописываются некоторые параметры (не нужно импортировать react в файлы jsx)
+- для многих объектов, которые передаются в качестве аргументов в функции nextJS (Типа getInitialProps, request, response) есть свои типы в next -  NextApiRequest, NextApiResponse, NextPageContext итд. если их обозначать то редактор будет подсказывать ключи этих объектов. Но если поле это имя файла в объекте query - нужно создавать собственный интерфейс, наследоваться от встроенного и расширять его, добавляя вручную поля

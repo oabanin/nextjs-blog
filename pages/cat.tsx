@@ -2,9 +2,15 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { useState, useEffect } from "react";
+import { Cat } from "../interfaces/cat";
+import { NextPageContext } from 'next';  //тип контекста для Typescript
+
+interface CatPageProps { // создаем интерфейс (надъобъектная сущность которая помогает описать форму объекта)
+    posts: Cat[]
+}
 
 //(2) Компонент получает из getInitialProps пропсы (данные апи). это фронтенд
-const Post = ({ posts: serverPosts }) => {
+const Post = ({ posts: serverPosts }: CatPageProps) => {
 
     const [posts, setPosts] = useState(serverPosts); // по умолчанию ставим стейт такой как прилетел с getInitialProps (null или данные)
     useEffect(() => {
@@ -61,9 +67,10 @@ const Post = ({ posts: serverPosts }) => {
 
 //(1) документация рекомендует вместо get initialprops, работает также само, изменяется формат возврата объекьа
 // но при этом мы лишаемся возможности уменьшить задержку для пользователя при переходе между ссылками на сайте
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: NextPageContext) {
+
     const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-    const json = await res.json();
+    const json: Cat[] = await res.json();
 
     if (!json) {
         return { props: { posts: null } };
