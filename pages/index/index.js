@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-
 const Post = ({ title }) => {
     const router = useRouter();
     console.log(router);
