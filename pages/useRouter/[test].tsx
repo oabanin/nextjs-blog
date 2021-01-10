@@ -20,7 +20,7 @@ const Post = ({ post: serverPost }: PostPageProps) => {
     useEffect(() => {
 
         async function load() {
-            const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${router.query.test}`)
+            const res = await fetch(`${process.env.API_URL}/posts/${router.query.test}`)
             const json = await res.json()
             setPost(json);
         }

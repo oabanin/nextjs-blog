@@ -15,7 +15,7 @@ const Post = ({ posts: serverPosts }: CatPageProps) => {
     const [posts, setPosts] = useState(serverPosts); // по умолчанию ставим стейт такой как прилетел с getInitialProps (null или данные)
     useEffect(() => {
         async function load() {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+            const response = await fetch(`${process.env.API_URL}/posts`);
             const json = await response.json();
             setPosts(json);
         }
